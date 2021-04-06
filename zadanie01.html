@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+
+<!-- animacja dodawania (?) -->
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        var doanimacji2
+        var doanimacji3
+        var going = 0
+        var gora = 0
+        var punkty
+        var ilosc = 0
+        var tablicakolory2 = []
+        var tablicawolne = []
+        var kolor = 1
+        var animationKlikEvent
+        var doanimacji
+        var jakas = 1
+        var poz = 0
+        var pozcheck = 0
+        var dupa = 5
+        var click = 0
+        var tablicapoczatekB = []
+        var tablicapoczatekC = []
+        var tablicakolory = ["nic", "img/jeden.png", "img/dwa.png", "img/trzy.png", "img/cztery.png", "img/piec.png", "img/szesc.png", "img/siedem.png", "img/osiem.png", "img/dziewiec.png"]
+        var tablicakolory1 = []
+        tablicakolory1.push("nic")
+        var startinner = []
+        var tablicatrasa = []
+        var check = 0
+        var start = []
+        var meta = []
+        var najkrotszadroga
+        var max
+        var min = 1
+        // var n = window.prompt("podaj wielkosc kulek")
+        var n = 9
+        if (n <= 1) {
+            throw new Error("Za niska ilość dostępnych kratek do dzialania!")
+        }
+        n = Number(n)
+
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length; i; i--) {
+                j = Math.floor(Math.random() * i);
+                x = a[i - 1];
+                a[i - 1] = a[j];
+                a[j] = x;
+            }
+        }
+
+        function init() {
+            document.body.innerHTML = ""
+            var form = document.createElement("form")
+            var select = document.createElement("select")
+            var option = document.createElement("option")
+            var option1 = document.createElement("option")
+            var option2 = document.createElement("option")
+            var option3 = document.createElement("option")
+            var submit = document.createElement("button")
+            var br = document.createElement("br")
+            var kompilacja = document.createElement("div")
+            kompilacja.innerHTML = "14:47 / 4.12.2017 pause1"
+            kompilacja.textAlign = "center"
+            submit.type = "button"
+            submit.name = "submit"
+            submit.innerText = "Wybierz"
+            submit.onclick = get
+            submit.style.margin = "20px"
+            option3.innerHTML = "Proszę wybrać ilość kolorów kulek."
+            option3.selected = "selected"
+            select.appendChild(option3)
+            option.innerHTML = 5
+            select.appendChild(option)
+            option1.innerHTML = 7
+            select.appendChild(option1)
+            option2.innerHTML = 9
+            select.appendChild(option2)
+            form.appendChild(select)
+            form.appendChild(br)
+            form.appendChild(br)
+            form.appendChild(submit)
+            form.style.textAlign = "center"
+            document.body.appendChild(form)
+            document.body.appendChild(kompilacja)
+
+            function get() {
+                max = select.options[select.selectedIndex].text;
+                if (max.length == 1 && max != 0) {
+                    document.body.innerHTML = ""
+                    init1()
+                }
+            }
+        }
+
+        function restart() {
+            document.body.innerHTML = ""
+            var form = document.createElement("form")
+            var select = document.createElement("select")
+            var option = document.createElement("option")
+            var option1 = document.createElement("option")
+            var option2 = document.createElement("option")
+            var option3 = document.createElement("option")
+            var submit = document.createElement("button")
+            var br = document.createElement("br")
+            submit.type = "button"
+            submit.name = "submit"
+            submit.innerText = "Wybierz"
+            submit.onclick = get
+            submit.style.margin = "20px"
+            option3.innerHTML = "Proszę wybrać ilość kolorów kulek."
+            option3.selected = "selected"
+            select.appendChild(option3)
+            option.innerHTML = 5
+            select.appendChild(option)
+            option1.innerHTML = 7
+            select.appendChild(option1)
+            option2.innerHTML = 9
+            select.appendChild(option2)
+            form.appendChild(select)
+            form.appendChild(br)
+            form.appendChild(br)
+            form.appendChild(submit)
+            form.style.textAlign = "center"
+            document.body.appendChild(form)
+
+            function get() {
+                max = select.options[select.selectedIndex].text;
+                if (max.length == 1 && max != 0) {
+                    document.body.innerHTML = ""
+                    init1()
+                }
+            }
+        }
+
+        function init1() {
+            ilosc = 0
+            tablicakolory2 = []
+            tablicawolne = []
+            kolor = 1
+            animationKlikEvent
+            doanimacji = null
+            jakas = 1
+            poz = 0
+            pozcheck = 0
+            dupa = 5
+            click = 0
+            tablicapoczatekB = []
+            tablicapoczatekC = []
+            tablicakolory = ["nic", "img/jeden.png", "img/dwa.png", "img/trzy.png", "img/cztery.png", "img/piec.png", "img/szesc.png", "img/siedem.png", "img/osiem.png", "img/dziewiec.png"]
+            tablicakolory1 = []
+            tablicakolory1.push("nic")
+            startinner = []
+            tablicatrasa = []
+            check = 0
+            start = []
+            meta = []
+            najkrotszadroga = null
+            min = 1
+
+            var szer = window.innerWidth + 100
+            var wys = window.innerHeight
+
+            var table = document.createElement("table")
+            table.id = "tabela"
+            //table.style.border = "15px solid transparent"
+            table.style.borderWidth = "15px"
+            table.style.borderStyle = "solid"
+            table.style.padding = "0px"
+            table.style.borderImageSource = "url(img/border.png)"
+            table.style.borderImageRepeat = "repeat"
+            table.style.borderImageSlice = "33%"
+            table.style.position = "relative"
+            table.style.left = (szer / 2) - ((n / 2 + 1) * 40) + "px"
+            document.body.appendChild(table)
+
+            for (var i = 0; i < n; i++) {
+                var tr = document.createElement("tr")
+                var tableget = document.getElementById("tabela")
+                tableget.appendChild(tr)
+                tablicapoczatekB.push([i])
+                tablicapoczatekC.push([i])
+                tablicakolory2.push([i])
+                for (var j = 0; j < n; j++) {
+                    tablicapoczatekB[i].push("0")
+                    tablicapoczatekC[i].push("")
+                    tablicakolory2[i].push("")
+                    var td = document.createElement("td")
+                    td.id = "id_" + i + "_" + j
+                    td.style.border = "outset 3px"
+                    td.style.backgroundColor = "lightgray"
+                    td.style.margin = "0"
+                    td.style.width = "41px"
+                    td.style.height = "41px"
+                    td.style.textAlign = "center"
+                    tr.appendChild(td)
+                }
+                tablicapoczatekB[i] = tablicapoczatekB[i].slice(1, n + 1)
+                tablicapoczatekC[i] = tablicapoczatekC[i].slice(1, n + 1)
+                tablicakolory2[i] = tablicakolory2[i].slice(1, n + 1)
+            }
+
+            var szer2 = getComputedStyle(table).height
+            szer2 = szer2.replace('px', '');
+            szer2 = Number(szer2)
+            szer2 += 30
+
+            var table_pos = table.getBoundingClientRect();
+
+            var wynik = document.createElement("div")
+            wynik.id = "wynik"
+            wynik.style.borderWidth = "15px"
+            wynik.style.borderStyle = "solid"
+            wynik.style.padding = "0px"
+            wynik.style.borderImageSource = "url(img/border.png)"
+            wynik.style.borderImageRepeat = "repeat"
+            wynik.style.borderImageSlice = "33%"
+            wynik.style.width = "200px"
+            wynik.style.height = (szer2 / 3) + 50 + "px"
+            wynik.style.position = "absolute"
+            wynik.style.left = (szer / 2) - ((n / 2 + 1) * 40) - 222 + "px"
+            wynik.style.top = "8px"
+            wynik.style.backgroundColor = "lightgray"
+
+            var imgwynik = document.createElement("img")
+            imgwynik.src = "img/wynik.png"
+            imgwynik.style.margin = "30px 20px"
+
+            var wynikdiv = document.createElement("div")
+            wynikdiv.style.width = "180px"
+            wynikdiv.style.height = "50px"
+            wynikdiv.style.margin = "-20px 10px"
+            wynikdiv.style.border = "3px outset "
+
+            var wynikdiv1 = document.createElement("div")
+            wynikdiv1.id = "wynikdiv1"
+            wynikdiv1.style.width = "174px"
+            wynikdiv1.style.height = "44px"
+            wynikdiv1.style.border = "3px inset"
+            wynikdiv1.innerHTML = "0"
+            wynikdiv1.style.fontFamily = "digital"
+            wynikdiv1.style.textAlign = "right"
+            wynikdiv1.style.fontSize = "44px"
+            wynikdiv1.style.color = "DimGray "
+            wynik.appendChild(imgwynik)
+            wynik.appendChild(wynikdiv)
+            wynikdiv.appendChild(wynikdiv1)
+            document.body.appendChild(wynik)
+
+            var tlo = document.createElement("div")
+            tlo.id = "tlo"
+            tlo.style.borderWidth = "15px"
+            tlo.style.borderStyle = "solid"
+            tlo.style.padding = "0px"
+            tlo.style.borderImageSource = "url(img/border.png)"
+            tlo.style.borderImageRepeat = "repeat"
+            tlo.style.borderImageSlice = "33%"
+            tlo.style.backgroundImage = "url(img/border1.png)"
+            tlo.style.width = "200px"
+            tlo.style.height = (szer2 / 3) - 7.5 + "px"
+            tlo.style.position = "absolute"
+            tlo.style.left = (szer / 2) - ((n / 2 + 1) * 40) - 222 + "px"
+            tlo.style.top = (szer2 / 3) + 50.5 + "px"
+            tlo.style.backgroundColor = "lightgray"
+            document.body.appendChild(tlo)
+
+            var nastepne = document.createElement("div")
+            nastepne.id = "nastepne"
+            nastepne.style.borderWidth = "15px"
+            nastepne.style.borderStyle = "solid"
+            nastepne.style.padding = "0px"
+            nastepne.style.borderImageSource = "url(img/border.png)"
+            nastepne.style.borderImageRepeat = "repeat"
+            nastepne.style.borderImageSlice = "33%"
+            nastepne.style.width = "200px"
+            nastepne.style.height = szer2 / 3 + "px"
+            nastepne.style.top = table_pos.bottom - szer2 / 3 - 30 + "px"
+            nastepne.style.position = "absolute"
+            nastepne.style.left = (szer / 2) - ((n / 2 + 1) * 40) - 222 + "px"
+            nastepne.style.backgroundColor = "lightgray"
+            document.body.appendChild(nastepne)
+
+            var nastepne1 = document.createElement("div")
+            nastepne1.id = "nastepne1"
+
+            var img = document.createElement("img")
+            img.src = "img/nastepne.png"
+            img.style.margin = "30px 1.5px"
+            nastepne.appendChild(nastepne1)
+
+            var nextdiv = document.createElement("div")
+            nextdiv.id = "nextdiv"
+            nextdiv.style.width = "180px"
+            nextdiv.style.height = "50px"
+            nextdiv.style.margin = "-20px 10px"
+            nextdiv.style.border = "1px inset"
+            nastepne1.appendChild(img)
+            nastepne1.appendChild(nextdiv)
+
+            addKulkinew()
+        }
+
+        function sprawdzpuste() {
+            tablicawolne = []
+            for (var i = 0; i < tablicapoczatekB.length; i++) {
+                for (var j = 0; j < tablicapoczatekB[i].length; j++) {
+                    if (tablicapoczatekB[i][j] == "0") {
+                        tablicawolne.push(i + "_" + j)
+                    }
+                }
+            }
+        }
+
+        async function addKulkinew() {
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    if (tablicakolory2[i][j] != "") {
+                        tablicakolory2[i][j] = ""
+                    }
+                }
+            }
+
+            var nastepnediv = document.getElementById("nextdiv")
+            nastepnediv.innerHTML = ""
+
+            function randomIntFromInterval(xd, xd1) {
+                return Math.floor(Math.random() * (xd1 - xd + 1) + xd);
+            }
+
+            if (kolor == 1) {
+                for (var i = 0; i < 5; i++) {
+                    tablicakolory1.push(randomIntFromInterval(min, max))
+                }
+            }
+            if (kolor == 1) {
+                dupa = 5
+            }
+            else { dupa = 3 }
+
+            for (var i = 0; i < dupa; i++) {
+                sprawdzpuste()
+                if (tablicawolne.length > 0) {
+                    var zmienna = tablicakolory1[kolor]
+                    tablicakolory1[kolor] = tablicakolory[zmienna]
+                    var wolnepole = tablicawolne[Math.floor(Math.random() * tablicawolne.length)]
+                    wolnepole_t = wolnepole.split("_")
+                    tablicapoczatekB[wolnepole_t[0]][wolnepole_t[1]] = kolor
+                    var td = document.getElementById("id_" + [wolnepole_t[0]] + "_" + [wolnepole_t[1]])
+                    var div = document.createElement("div")
+                    div.id = "div_" + [wolnepole_t[0]] + "_" + [wolnepole_t[1]]
+                    div.style.width = "39px"
+                    div.style.height = "39px"
+                    div.style.cursor = "pointer"
+                    div.style.background = "url('" + tablicakolory1[kolor] + "')"
+                    td.appendChild(div)
+                    tablicapoczatekC[[wolnepole_t[0]]][wolnepole_t[1]] = "X"
+                    doanimacji2 = div
+                    doanimacji2.style.transform = "scale(" + 0 + "," + 0
+                    div.addEventListener("click", startmeta)
+                    nastepnediv.innerHTML = "<p style=\x22margin:0 auto; margin-top:10px; padding: -20px;\x22>Prosze czekac!</p>"
+                    nastepnediv.style.textAlign = "center"
+                    nastepnediv.style.fontFamily = "Brush Script MT"
+                    nastepnediv.style.fontSize = "20px"
+                    nastepnediv.style.color = "DimGray "
+                    await animationShowUpTv()
+
+                    doanimacji2 = null
+                    kolor++
+                }
+                else {
+                    koniec()
+                    return 0
+                }
+            }
+
+            sprawdzpuste()
+            if (tablicawolne.length == 0) {
+                koniec()
+                return 0
+            }
+
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    if (tablicapoczatekB[i][j] != "0") {
+                        tablicakolory2[i][j] = tablicakolory1[tablicapoczatekB[i][j]]
+                    }
+                }
+            }
+
+            if (tablicawolne.length > 0) {
+                nastepnediv.innerHTML = ""
+                if (kolor >= 3) {
+                    for (var i = 0; i < 3; i++) {
+                        tablicakolory1.push(randomIntFromInterval(min, max))
+                    }
+                }
+                for (var i = 3; i >= 1; i--) {
+                    var imgnext = document.createElement("img")
+                    imgnext.src = tablicakolory[tablicakolory1[tablicakolory1.length - i]]
+                    imgnext.style.margin = "5px 10px"
+                    nastepnediv.appendChild(imgnext)
+                }
+            }
+            going = 0
+            checkifpunkty()
+
+        }
+
+        async function animationShowUpTv() {
+            for (var i = 1; i <= 39; i++) {
+
+                going = 1
+                i = Number(i)
+                doanimacji2.style.transform = "scale(" + i / 39 + "," + i / 39
+                await sleep(10)
+            }
+        }
+
+        async function animationznikaj() {
+            odjete = 0
+            console.log(punkty)
+            for (var i = 39; i >= 1; i--) {
+                going = 1
+                i = Number(i)
+                if (doanimacji3) {
+                    doanimacji3.style.transform = "scale(" + i / 39 + "," + i / 39
+                }
+
+                if (!odjete && punkty >= 10) {
+                    ilosc -= 1
+                    odjete = 1
+                }
+
+                await sleep(10)
+            }
+        }
+
+        function initpo() {
+            tablicapoczatekC = []
+            for (var i = 0; i < n; i++) {
+                tablicapoczatekC.push([i])
+                tablicapoczatekC[i] = tablicapoczatekC[i].slice(1, n + 1)
+                for (var j = 0; j < n; j++) {
+                    tablicapoczatekC[i].push("")
+                    if (tablicapoczatekB[i][j] == "S") {
+                        var td = document.getElementById("id_" + [i] + "_" + [j])
+                        td.innerHTML = ""
+                        tablicapoczatekB[i][j] = "0"
+                    }
+                    if (tablicapoczatekB[i][j] == "0") {
+                        var td = document.getElementById("id_" + [i] + "_" + [j])
+                        td.style.backgroundColor = "lightgray"
+                    }
+                    if (tablicapoczatekB[i][j] != "0") {
+                        var div = document.getElementById("div_" + [i] + "_" + [j])
+                        if (div) {
+                            div.addEventListener("click", startmeta)
+                            tablicapoczatekC[i][j] = "X"
+                        }
+                    }
+
+                    var td = document.getElementById("id_" + [i] + "_" + [j])
+                    if (td.style.backgroundColor == "beige") {
+                        td.style.backgroundColor = "lightgray"
+                    }
+                }
+
+            }
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    var div = document.getElementById("div_" + [i] + "_" + [j])
+                    if (div) { div.removeEventListener("click", zmien) }
+                }
+            }
+            gora = 0
+            startinner = []
+            tablicatrasa = []
+            check = 0
+            start = []
+            meta = []
+            najkrotszadroga
+            click = 0
+            init = 1
+        }
+
+        function wyznacztrase() {
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    td = document.getElementById("id_" + i + "_" + j)
+                    if (tablicapoczatekB[i][j] == "M" || tablicapoczatekB[i][j] == "S") {
+                        td.style.backgroundColor = "beige"
+                    }
+                }
+            }
+
+            for (var k = 0; k < tablicapoczatekB.length; k++) {
+                for (var l = 0; l < tablicapoczatekB.length; l++) {
+                    if (tablicapoczatekB[k][l] == "S") {
+                        start.push(k, l)
+                    }
+                    if (tablicapoczatekB[k][l] == "M") {
+                        meta.push(k, l)
+                    }
+                }
+            }
+
+            start[0] = Number(start[0])
+            start[1] = Number(start[1])
+            tablicapoczatekC[start[0]][start[1]] = "S"
+
+            if (meta.length > 0) {
+                tablicapoczatekC[meta[0]][meta[1]] = "M"
+            }
+
+            if (typeof (tablicapoczatekC[start[0] + 1]) !== "undefined" && typeof (tablicapoczatekB[start[0] + 1]) !== "undefined") {
+                if (typeof (tablicapoczatekC[start[0] + 1][start[1]]) !== "undefined" && typeof (tablicapoczatekB[start[0] + 1][start[1]]) !== "undefined") {
+                    if (tablicapoczatekC[start[0] + 1][start[1]] != "X" && start[0] + 1 < n) {
+                        tablicapoczatekC[start[0] + 1][start[1]] = [start[0]] + "_" + [start[1]]
+                    }
+                }
+            }
+
+            if (typeof (tablicapoczatekC[start[0] - 1]) !== "undefined" && typeof (tablicapoczatekB[start[0] - 1]) !== "undefined") {
+                if (typeof (tablicapoczatekC[start[0] - 1][start[1]]) !== "undefined" && typeof (tablicapoczatekB[start[0] - 1][start[1]]) !== "undefined") {
+                    if (tablicapoczatekC[start[0] - 1][start[1]] != "X" && start[0] + 1 >= 0) {
+                        tablicapoczatekC[start[0] - 1][start[1]] = [start[0]] + "_" + [start[1]]
+                    }
+                }
+            }
+
+            if (typeof (tablicapoczatekC[start[0]]) !== "undefined" && typeof (tablicapoczatekB[start[0]]) !== "undefined") {
+                if (tablicapoczatekC[start[0]][start[1] + 1] != "X" && start[1] + 1 < n) {
+                    tablicapoczatekC[start[0]][start[1] + 1] = [start[0]] + "_" + [start[1]]
+                }
+            }
+
+            if (typeof (tablicapoczatekC[start[0]]) !== "undefined" && typeof (tablicapoczatekB[start[0]]) !== "undefined") {
+                if (tablicapoczatekC[start[0]][start[1] - 1] != "X" && start[1] - 1 >= 0) {
+                    tablicapoczatekC[start[0]][start[1] - 1] = [start[0]] + "_" + [start[1]]
+                }
+            }
+
+            var dont1 = 0
+            var dont2 = 0
+            var dont3 = 0
+            var dont4 = 0
+
+            for (var z = 0; z < 2; z++) {
+                for (var k = 0; k < n; k++) {
+                    for (var l = 0; l < n; l++) {
+                        if (typeof (tablicapoczatekC[k]) !== "undefined" && (tablicapoczatekC[k][l]) !== "undefined") {
+                            if (tablicapoczatekC[k][l] != "" && tablicapoczatekC[k][l] != "M" && tablicapoczatekC[k][l] != "S" && tablicapoczatekC[k][l] != "X") {
+                                if (typeof (tablicapoczatekC[k + 1]) !== "undefined" && typeof (tablicapoczatekC[k + 1][l]) !== "undefined" && dont2 == 0) {
+                                    if (tablicapoczatekC[k + 1][l] == "" && tablicapoczatekC[k + 1][l] != "X" && tablicapoczatekC[k + 1][l] != "M" && tablicapoczatekC[k + 1][l] != "S") {
+                                        tablicapoczatekC[k + 1][l] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                    }
+                                    if (tablicapoczatekC[k + 1][l] != "" && tablicapoczatekC[k + 1][l] != "X" && tablicapoczatekC[k + 1][l] != "M" && tablicapoczatekC[k + 1][l] != "S") {
+                                        var spr = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        var spr1 = spr.split(",")
+                                        var spr2 = tablicapoczatekC[k + 1][l]
+                                        var spr3 = spr2.split(",")
+
+                                        if (spr1.length <= spr3.length) {
+                                            tablicapoczatekC[k + 1][l] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        }
+                                    }
+                                    if (tablicapoczatekC[k + 1][l] == "M") {
+                                        tablicapoczatekC[meta[0]][meta[1]] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        dont2 = 1
+                                    }
+                                }
+
+                                if (typeof (tablicapoczatekC[k]) !== "undefined" && typeof (tablicapoczatekC[k][l + 1]) !== "undefined" && dont4 == 0) {
+                                    if (tablicapoczatekC[k][l + 1] == "" && tablicapoczatekC[k][l + 1] != "X" && tablicapoczatekC[k][l + 1] != "M" && tablicapoczatekC[k][l + 1] != "S") {
+                                        tablicapoczatekC[k][l + 1] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                    }
+                                    if (tablicapoczatekC[k][l + 1] != "" && tablicapoczatekC[k][l + 1] != "X" && tablicapoczatekC[k][l + 1] != "M" && tablicapoczatekC[k][l + 1] != "S") {
+                                        var spr = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        var spr1 = spr.split(",")
+                                        var spr2 = tablicapoczatekC[k][l + 1]
+                                        var spr3 = spr2.split(",")
+                                        if (spr1.length <= spr3.length) {
+                                            tablicapoczatekC[k][l + 1] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        }
+                                    }
+                                    if (tablicapoczatekC[k][l + 1] == "M") {
+                                        tablicapoczatekC[meta[0]][meta[1]] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        dont4 = 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                for (var j = 0; j < n; j++) {
+                    for (var k = 0; k < n; k++) {
+                        for (var l = -10; l < n; l++) {
+                            if (typeof (tablicapoczatekC[k]) !== "undefined" && (tablicapoczatekC[k][l]) !== "undefined") {
+                                if (tablicapoczatekC[k][l] != "" && tablicapoczatekC[k][l] != "M" && tablicapoczatekC[k][l] != "S" && tablicapoczatekC[k][l] != "X") {
+                                    if (typeof (tablicapoczatekC[k]) !== "undefined" && typeof (tablicapoczatekC[k][l - 1]) !== "undefined" && dont3 == 0) {
+                                        if (tablicapoczatekC[k][l - 1] == "" && tablicapoczatekC[k][l - 1] != "X" && tablicapoczatekC[k][l - 1] != "M" && tablicapoczatekC[k][l - 1] != "S") {
+                                            tablicapoczatekC[k][l - 1] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        }
+                                        if (tablicapoczatekC[k][l - 1] != "" && tablicapoczatekC[k][l - 1] != "X" && tablicapoczatekC[k][l - 1] != "M" && tablicapoczatekC[k][l - 1] != "S") {
+                                            var spr = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                            var spr1 = spr.split(",")
+                                            var spr2 = tablicapoczatekC[k][l - 1]
+                                            var spr3 = spr2.split(",")
+                                            if (spr1.length <= spr3.length) {
+                                                tablicapoczatekC[k][l - 1] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                            }
+                                        }
+                                        if (tablicapoczatekC[k][l - 1] == "M") {
+                                            tablicapoczatekC[meta[0]][meta[1]] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                            dont3 = 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (var j = 0; j < n; j++) {
+                    for (var k = 0; k < n; k++) {
+                        for (var l = 0; l < n; l++) {
+                            if (typeof (tablicapoczatekC[k]) !== "undefined" && (tablicapoczatekC[k][l]) !== "undefined") {
+                                if (tablicapoczatekC[k][l] != "" && tablicapoczatekC[k][l] != "M" && tablicapoczatekC[k][l] != "S" && tablicapoczatekC[k][l] != "X") {
+                                    if (typeof (tablicapoczatekC[k - 1]) !== "undefined" && typeof (tablicapoczatekC[k - 1][l]) !== "undefined" && dont1 == 0) {
+                                        if (tablicapoczatekC[k - 1][l] == "" && tablicapoczatekC[k - 1][l] != "X" && tablicapoczatekC[k - 1][l] != "M" && tablicapoczatekC[k - 1][l] != "S") {
+                                            tablicapoczatekC[k - 1][l] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                        }
+                                        if (tablicapoczatekC[k - 1][l] != "" && tablicapoczatekC[k - 1][l] != "X" && tablicapoczatekC[k - 1][l] != "M" && tablicapoczatekC[k - 1][l] != "S") {
+                                            var spr = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                            var spr1 = spr.split(",")
+                                            var spr2 = tablicapoczatekC[k - 1][l]
+                                            var spr3 = spr2.split(",")
+                                            if (spr1.length <= spr3.length) {
+                                                tablicapoczatekC[k - 1][l] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                            }
+                                        }
+                                        if (tablicapoczatekC[k - 1][l] == "M") {
+                                            tablicapoczatekC[meta[0]][meta[1]] = tablicapoczatekC[k][l] + "," + [k + "_" + l]
+                                            dont1 = 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function podswietlnajkrotsza() {
+            for (var k = 0; k < n; k++) {
+                for (var l = 0; l < n; l++) {
+                    if (tablicapoczatekC[k][l] == "") {
+                        tablicapoczatekC[k][l] = "nd"
+                        var td = document.getElementById("id_" + k + "_" + l)
+                        td.removeEventListener("mouseenter", podazaj)
+                        td.removeEventListener("click", startmeta)
+                    }
+                }
+            }
+
+            if (meta.length > 0) {
+                var najkrotsza = tablicapoczatekC[meta[0]][meta[1]]
+            }
+            else {
+                for (var i = 0; i < n; i++) {
+                    for (var j = 0; j < n; j++) {
+                        if (tablicapoczatekB[i][j] == "O") {
+                            var najkrotsza = tablicapoczatekC[i][j]
+                            var ostatnielement = i + "_" + j
+                        }
+                    }
+                }
+            }
+            if (najkrotsza) { najkrotszadroga = najkrotsza.split(",") }
+            najkrotszadroga.push(ostatnielement)
+
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    var td = document.getElementById("id_" + i + "_" + j)
+                    var div = document.getElementById("div_" + i + "_" + j)
+                    if (td.style.backgroundColor == "beige" && tablicapoczatekB[i][j] != "S") {
+                        td.style.backgroundColor = "lightgray"
+                    }
+                }
+            }
+
+            if (najkrotszadroga != "M" && najkrotszadroga != "" && najkrotszadroga[0] != "nd") {
+                for (var z = 0; z < najkrotszadroga.length; z++) {
+                    var element = document.getElementById("id_" + najkrotszadroga[z])
+                    element.style.backgroundColor = "beige"
+                }
+                for (var i = 0; i < n; i++) {
+                    for (var j = 0; j < n; j++) {
+                        var td = document.getElementById("id_" + i + "_" + j)
+                        if (tablicapoczatekC[i][j] == "" && td.style.backgroundColor == "beige" && tablicapoczatekB[i][j] != "S") {
+                            td.style.backgroundColor = "lightgray"
+                        }
+                    }
+                }
+            }
+
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    if (tablicapoczatekC[i][j] == "") {
+                        td.removeEventListener("mouseenter", podazaj)
+                        td.removeEventListener("click", startmeta)
+                        if (td.style.backgroundColor == "beige" && tablicapoczatekB[i][j] != "S") {
+                            td.style.backgroundColor = "lightgray"
+                        }
+                    }
+                }
+            }
+        }
+
+        async function przenieskulke() {
+            for (var k = 0; k < tablicapoczatekB.length; k++) {
+                for (var l = 0; l < tablicapoczatekB.length; l++) {
+                    if (tablicapoczatekB[k][l] == "M") {
+                        meta.push(k, l)
+                    }
+                }
+            }
+
+            if (najkrotszadroga != "M") {
+                for (var z = 0; z < najkrotszadroga.length; z++) {
+                    var element = document.getElementById("id_" + najkrotszadroga[z])
+                    element.style.backgroundColor = "beige"
+                }
+
+                var z = document.getElementById("id_" + [meta[0]] + "_" + [meta[1]])
+
+                animationMove()
+                tablicapoczatekB[meta[0]][meta[1]] = startinner
+                var div = document.createElement("div")
+                div.id = "div_" + [meta[0]] + "_" + [meta[1]]
+                div.style.background = "url('" + tablicakolory1[startinner] + "')"
+                var czekaj = (najkrotszadroga.length) * 200
+
+                if (gora == 1)
+                    czekaj += (najkrotszadroga.length + 1) * 100
+
+                await sleep(czekaj)
+                going = 0
+
+                div.style.width = "39px"
+                div.style.height = "39px"
+                div.style.cursor = "pointer"
+
+                z.appendChild(div)
+                div.addEventListener("click", startmeta)
+                checkifpunkty()
+                if (!punkty)
+                    addKulkinew()
+            }
+            else if (najkrotszadroga == "M") {
+                tablicapoczatekB[start[0]][start[1]] = startinner
+                for (var i = 0; i < n; i++) {
+                    for (var j = 0; j < n; j++) {
+                        var td = document.getElementById("id_" + i + "_" + j)
+                        td.style.backgroundColor = "lightgray"
+                        if (tablicapoczatekB[i][j] == "S") {
+                            tablicapoczatekB[i][j] = 0
+                        }
+                    }
+                }
+            }
+        }
+
+        function startmeta() {
+            var siusiak = false
+            var idik = this.id
+            var idik_t = idik.split('_')
+
+            if (+idik_t[1] + 1 > 8 || tablicapoczatekB[+idik_t[1] + 1][idik_t[2]] != "0")
+                var prawo = true
+
+            if (+idik_t[1] - 1 < 0 || tablicapoczatekB[+idik_t[1] - 1][idik_t[2]] != "0")
+                var lewo = true
+
+            if (+idik_t[2] + 1 > 8 || tablicapoczatekB[+idik_t[1]][+idik_t[2] + 1] != "0")
+                var dol = true
+
+            if (+idik_t[2] - 1 < 0 || tablicapoczatekB[+idik_t[1]][+idik_t[2] - 1] != "0")
+                var gora = true
+
+            if (gora && dol && lewo && prawo && check == 0)
+                siusiak = true
+
+            if (!siusiak) {
+                if (!going) {
+                    if (doanimacji) { doanimacji.style.transform = "" }
+                    cancelAnimationFrame(animationKlikEvent)
+                    var id = this.id
+                    var tab = id.split("_")
+                    var td = document.getElementById("id_" + [tab[1]] + "_" + [tab[2]])
+
+                    this.removeEventListener("click", startmeta)
+                    if (tablicapoczatekB[tab[1]][tab[2]] == "S") {
+                        td.style.backgroundColor = "lightgray"
+                        tablicapoczatekB[tab[1]][tab[2]] = startinner
+                        tablicapoczatekC[tab[1]][tab[2]] = "X"
+                        for (var i = 0; i < n; i++) {
+                            for (var j = 0; j < n; j++) {
+                                var div = document.getElementById("div_" + i + "_" + j)
+                                var td = document.getElementById("id_" + i + "_" + j)
+                                td.removeEventListener("click", startmeta)
+                                td.removeEventListener("mouseenter", podazaj)
+                                if (div) { div.removeEventListener("click", zmien) }
+                            }
+                        }
+                        for (var i = 0; i < n; i++) {
+                            for (var j = 0; j < n; j++) {
+                                if (tablicapoczatekB[i][j] == "O") {
+                                    tablicapoczatekB[i][j] = 0
+                                }
+                                var td = document.getElementById("id_" + i + "_" + j)
+                                td.style.backgroundColor = "lightgray"
+                            }
+                        }
+                        initpo()
+                        return 0
+                    }
+
+                    else if (check == 1) {
+                        tablicapoczatekB[tab[1]][tab[2]] = "M"
+                        for (var i = 0; i < n; i++) {
+                            for (var j = 0; j < n; j++) {
+                                var td = document.getElementById("id_" + i + "_" + j)
+                                td.removeEventListener("click", startmeta)
+                                td.removeEventListener("mouseenter", podazaj)
+                                if (!div) { }
+                                else {
+                                    div.removeEventListener("click", zmien)
+                                }
+                            }
+                        }
+                        przenieskulke()
+                        return 0
+                    }
+
+                    if (check == 0) {
+                        startinner = tablicapoczatekB[tab[1]][tab[2]]
+                        tablicapoczatekB[tab[1]][tab[2]] = "S"
+                        for (var i = 0; i < n; i++) {
+                            for (var j = 0; j < n; j++) {
+                                var td = document.getElementById("id_" + i + "_" + j)
+                                td.addEventListener("click", startmeta)
+                                td.addEventListener("mouseenter", podazaj)
+                            }
+                        }
+
+                        var td = document.getElementById("id_" + [tab[1]] + "_" + [tab[2]])
+                        td.removeEventListener("click", startmeta)
+                        for (var i = 0; i < n; i++) {
+                            for (var j = 0; j < n; j++) {
+                                if (tablicapoczatekC[i][j] == "X") {
+                                    var td = document.getElementById("id_" + i + "_" + j)
+                                    td.removeEventListener("click", startmeta)
+                                    td.removeEventListener("mouseenter", podazaj)
+                                }
+                            }
+                        }
+
+                        for (var i = 0; i < n; i++) {
+                            for (var j = 0; j < n; j++) {
+                                var div = document.getElementById("div_" + i + "_" + j)
+                                if (!div) { }
+                                else if (tablicapoczatekB[i][j] == "S") {
+                                    div.removeEventListener("mouseenter", podazaj)
+                                }
+                                else {
+                                    div.removeEventListener("mouseenter", podazaj)
+                                    div.removeEventListener("click", startmeta)
+                                    div.addEventListener("click", zmien)
+                                }
+                            }
+                        }
+
+                        doanimacji = this
+                        animationKlik()
+                        this.addEventListener("click", startmeta)
+                        wyznacztrase()
+                        check = 1
+                    }
+                }
+            }
+        }
+
+        function zmien() {
+            if (!going) {
+                if (doanimacji) { doanimacji.style.transform = "" }
+                cancelAnimationFrame(animationKlikEvent)
+                var id = this.id
+                var tab = id.split("_")
+                var td = document.getElementById("id_" + [tab[1]] + "_" + [tab[2]])
+                for (var i = 0; i < n; i++) {
+                    for (var j = 0; j < n; j++) {
+                        var td = document.getElementById("id_" + i + "_" + j)
+                        td.removeEventListener("click", startmeta)
+                        td.removeEventListener("mouseenter", podazaj)
+                    }
+                }
+                for (var i = 0; i < n; i++) {
+                    for (var j = 0; j < n; j++) {
+                        var td = document.getElementById("id_" + i + "_" + j)
+                        if (td.style.backgroundColor != "lightgray") {
+                            tablicapoczatekB[i][j] = 0
+                            td.style.backgroundColor = "lightgray"
+                        }
+                    }
+                }
+
+                tablicapoczatekB[start[0]][start[1]] = startinner
+                tablicapoczatekC[start[0]][start[1]] = "X"
+                initpo()
+
+                var siusiak = false
+                var idik = this.id
+                var idik_t = idik.split('_')
+
+                if (+idik_t[1] + 1 > 8 || tablicapoczatekB[+idik_t[1] + 1][idik_t[2]] != "0")
+                    var prawo = true
+
+                if (+idik_t[1] - 1 < 0 || tablicapoczatekB[+idik_t[1] - 1][idik_t[2]] != "0")
+                    var lewo = true
+
+                if (+idik_t[2] + 1 > 8 || tablicapoczatekB[+idik_t[1]][+idik_t[2] + 1] != "0")
+                    var dol = true
+
+                if (+idik_t[2] - 1 < 0 || tablicapoczatekB[+idik_t[1]][+idik_t[2] - 1] != "0")
+                    var gora = true
+
+                if (gora && dol && lewo && prawo)
+                    siusiak = true
+
+                if (!siusiak) {
+                    start = []
+                    start.push(tab[1], tab[2])
+                    startinner = tablicapoczatekB[tab[1]][tab[2]]
+                    tablicapoczatekB[tab[1]][tab[2]] = "S"
+                    for (var i = 0; i < n; i++) {
+                        for (var j = 0; j < n; j++) {
+                            var td = document.getElementById("id_" + i + "_" + j)
+                            td.addEventListener("click", startmeta)
+                            td.addEventListener("mouseenter", podazaj)
+                        }
+                    }
+
+                    var td = document.getElementById("id_" + [tab[1]] + "_" + [tab[2]])
+                    td.removeEventListener("click", startmeta)
+                    for (var i = 0; i < n; i++) {
+                        for (var j = 0; j < n; j++) {
+                            if (tablicapoczatekC[i][j] == "X") {
+                                var td = document.getElementById("id_" + i + "_" + j)
+                                td.removeEventListener("click", startmeta)
+                                td.removeEventListener("mouseenter", podazaj)
+                            }
+                        }
+                    }
+
+                    for (var i = 0; i < n; i++) {
+                        for (var j = 0; j < n; j++) {
+                            var div = document.getElementById("div_" + i + "_" + j)
+                            if (!div) { }
+                            else if (div && tablicapoczatekB[i][j] == "S") {
+                                div.removeEventListener("mouseenter", podazaj)
+                            }
+                            else {
+                                td.removeEventListener("mouseenter", podazaj)
+                                td.removeEventListener("click", startmeta)
+                                div.removeEventListener("click", startmeta)
+                                div.addEventListener("click", zmien)
+                            }
+                        }
+                    }
+                    doanimacji = this
+                    animationKlik()
+                    this.addEventListener("click", startmeta)
+                    check = 1
+                    wyznacztrase()
+                }
+            }
+        }
+
+        function podazaj() {
+            sprawdzaj()
+            var id = this.id
+            var tab = id.split("_")
+            tablicapoczatekB[tab[1]][tab[2]] = "O"
+            wyznacztrase()
+            podswietlnajkrotsza()
+        }
+
+        function sprawdzaj() {
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    if (tablicapoczatekB[i][j] == "O") {
+                        tablicapoczatekB[i][j] = "0"
+                        var td = document.getElementById("id_" + i + "_" + j)
+                        td.style.backgroundColor = "lightgray"
+                    }
+                }
+            }
+        }
+
+        function checkifpunkty() {
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    if (tablicakolory2[i][j] != "") {
+                        tablicakolory2[i][j] = ""
+                    }
+                }
+            }
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    if (tablicapoczatekB[i][j] != "0") {
+                        tablicakolory2[i][j] = tablicakolory1[tablicapoczatekB[i][j]]
+                    }
+                }
+            }
+            punkty = 0
+            pion()
+            poziom()
+            skosplus()
+            skosminus()
+            async function pion() {
+                for (var q = 0; q < n; q++) {
+                    for (var p = 0; p < n; p++) {
+                        if (tablicakolory2[q + 1] && tablicakolory2[q + 2] && tablicakolory2[q + 3] && tablicakolory2[q + 4]) {
+                            if (tablicakolory2[q][p] == tablicakolory2[q + 1][p] &&
+                                tablicakolory2[q][p] == tablicakolory2[q + 2][p] &&
+                                tablicakolory2[q][p] == tablicakolory2[q + 3][p] &&
+                                tablicakolory2[q][p] == tablicakolory2[q + 4][p] &&
+                                tablicakolory2[q][p] != "") {
+                                if (tablicakolory2[q + 5]) {
+                                    if (tablicakolory2[q][p] == tablicakolory2[q + 5][p]) {
+                                        if (tablicakolory2[q + 6]) {
+                                            if (tablicakolory2[q][p] == tablicakolory2[q + 6][p]) {
+                                                if (tablicakolory2[q + 7]) {
+                                                    if (tablicakolory2[q][p] == tablicakolory2[q + 7][p]) {
+                                                        if (tablicakolory2[q + 8]) {
+                                                            if (tablicakolory2[q][p] == tablicakolory2[q + 8][p]) {
+                                                                ilosc += 9
+                                                                for (var z = 0; z < 9; z++) {
+                                                                    tablicapoczatekB[q + z][p] = "0"
+                                                                    q = Number(q)
+                                                                    z = Number(z)
+                                                                    var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                                    punkty += 1
+                                                                    await animationznikaj()
+                                                                    going = 0
+                                                                    td.innerHTML = ""
+                                                                }
+                                                                initpo()
+                                                                wynikdiv1.innerHTML = ilosc
+                                                                punkty += 1
+                                                                return 0
+                                                            }
+                                                            else {
+                                                                ilosc += 8
+                                                                for (var z = 0; z < 8; z++) {
+                                                                    tablicapoczatekB[q + z][p] = "0"
+                                                                    q = Number(q)
+                                                                    z = Number(z)
+                                                                    var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                                    punkty += 1
+                                                                    await animationznikaj()
+                                                                    going = 0
+                                                                    td.innerHTML = ""
+                                                                }
+                                                                initpo()
+                                                                wynikdiv1.innerHTML = ilosc
+                                                                punkty += 1
+                                                                return 0
+                                                            }
+                                                        } else {
+                                                            ilosc += 8
+                                                            for (var z = 0; z < 8; z++) {
+                                                                tablicapoczatekB[q + z][p] = "0"
+                                                                q = Number(q)
+                                                                z = Number(z)
+                                                                var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                                punkty += 1
+                                                                await animationznikaj()
+                                                                going = 0
+                                                                td.innerHTML = ""
+                                                            }
+                                                            initpo()
+                                                            wynikdiv1.innerHTML = ilosc
+                                                            punkty += 1
+                                                            return 0
+                                                        }
+                                                    }
+                                                    else {
+                                                        ilosc += 7
+                                                        for (var z = 0; z < 7; z++) {
+                                                            tablicapoczatekB[q + z][p] = "0"
+                                                            q = Number(q)
+                                                            z = Number(z)
+                                                            var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                            punkty += 1
+                                                            await animationznikaj()
+                                                            going = 0
+                                                            td.innerHTML = ""
+                                                        }
+                                                        initpo()
+                                                        wynikdiv1.innerHTML = ilosc
+                                                        punkty += 1
+                                                        return 0
+                                                    }
+                                                } else {
+                                                    ilosc += 7
+                                                    for (var z = 0; z < 7; z++) {
+                                                        tablicapoczatekB[q + z][p] = "0"
+                                                        q = Number(q)
+                                                        z = Number(z)
+                                                        var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                        punkty += 1
+                                                        await animationznikaj()
+                                                        going = 0
+                                                        td.innerHTML = ""
+                                                    }
+                                                    initpo()
+                                                    wynikdiv1.innerHTML = ilosc
+                                                    punkty += 1
+                                                    return 0
+                                                }
+                                            }
+                                            else {
+                                                ilosc += 6
+                                                for (var z = 0; z < 6; z++) {
+                                                    tablicapoczatekB[q + z][p] = "0"
+                                                    q = Number(q)
+                                                    z = Number(z)
+                                                    var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                    punkty += 1
+                                                    await animationznikaj()
+                                                    going = 0
+                                                    td.innerHTML = ""
+                                                }
+                                                initpo()
+                                                wynikdiv1.innerHTML = ilosc
+                                                punkty += 1
+                                                return 0
+                                            }
+                                        }
+                                        else {
+                                            ilosc += 6
+                                            for (var z = 0; z < 6; z++) {
+                                                tablicapoczatekB[q + z][p] = "0"
+                                                q = Number(q)
+                                                z = Number(z)
+                                                var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                                punkty += 1
+                                                await animationznikaj()
+                                                going = 0
+                                                td.innerHTML = ""
+                                            }
+                                            initpo()
+                                            wynikdiv1.innerHTML = ilosc
+                                            punkty += 1
+                                            return 0
+                                        }
+                                    }
+                                    else {
+                                        ilosc += 5
+                                        for (var z = 0; z < 5; z++) {
+                                            tablicapoczatekB[q + z][p] = "0"
+                                            q = Number(q)
+                                            z = Number(z)
+                                            var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                            punkty += 1
+                                            await animationznikaj()
+                                            going = 0
+                                            td.innerHTML = ""
+                                        }
+                                        initpo()
+                                        wynikdiv1.innerHTML = ilosc
+                                        return 0
+                                    }
+                                }
+                                else {
+                                    ilosc += 5
+                                    for (var z = 0; z < 5; z++) {
+                                        tablicapoczatekB[q + z][p] = "0"
+                                        q = Number(q)
+                                        z = Number(z)
+                                        var td = document.getElementById("id_" + (q + z) + "_" + p)
+                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + p)
+                                        punkty += 1
+                                        await animationznikaj()
+                                        going = 0
+                                        td.innerHTML = ""
+                                    }
+                                    initpo()
+                                    wynikdiv1.innerHTML = ilosc
+                                    return 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            async function poziom() {
+                for (var q = 0; q < n; q++) {
+                    for (var p = 0; p < n; p++) {
+                        if (tablicakolory2[q][p + 1] && tablicakolory2[q][p + 2] && tablicakolory2[q][p + 3] && tablicakolory2[q][p + 4]) {
+                            if (tablicakolory2[q][p] == tablicakolory2[q][p + 1] &&
+                                tablicakolory2[q][p] == tablicakolory2[q][p + 2] &&
+                                tablicakolory2[q][p] == tablicakolory2[q][p + 3] &&
+                                tablicakolory2[q][p] == tablicakolory2[q][p + 4] &&
+                                tablicakolory2[q][p] != "") {
+                                if (tablicakolory2[q][p + 5]) {
+                                    if (tablicakolory2[q][p] == tablicakolory2[q][p + 5]) {
+                                        if (tablicakolory2[q][p + 6]) {
+                                            if (tablicakolory2[q][p] == tablicakolory2[q][p + 6]) {
+                                                if (tablicakolory2[q][p + 7]) {
+                                                    if (tablicakolory2[q][p] == tablicakolory2[q][p + 7]) {
+                                                        if (tablicakolory2[q][p + 8]) {
+                                                            if (tablicakolory2[q][p] == tablicakolory2[q][p + 8]) {
+                                                                ilosc += 9
+                                                                for (var z = 0; z < 9; z++) {
+                                                                    tablicapoczatekB[q][p + z] = "0"
+                                                                    q = Number(q)
+                                                                    z = Number(z)
+                                                                    var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                                    doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                                    punkty += 1
+                                                                    await animationznikaj()
+                                                                    going = 0
+                                                                    td.innerHTML = ""
+                                                                }
+                                                                initpo()
+                                                                wynikdiv1.innerHTML = ilosc
+                                                                punkty += 1
+                                                                return 0
+                                                            }
+                                                            else {
+                                                                ilosc += 8
+                                                                for (var z = 0; z < 8; z++) {
+                                                                    tablicapoczatekB[q][p + z] = "0"
+                                                                    q = Number(q)
+                                                                    z = Number(z)
+                                                                    var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                                    doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                                    punkty += 1
+                                                                    await animationznikaj()
+                                                                    going = 0
+                                                                    td.innerHTML = ""
+                                                                }
+                                                                initpo()
+                                                                wynikdiv1.innerHTML = ilosc
+                                                                punkty += 1
+                                                                return 0
+                                                            }
+                                                        } else {
+                                                            ilosc += 8
+                                                            for (var z = 0; z < 8; z++) {
+                                                                tablicapoczatekB[q][p + z] = "0"
+                                                                q = Number(q)
+                                                                z = Number(z)
+                                                                var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                                doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                                punkty += 1
+                                                                await animationznikaj()
+                                                                going = 0
+                                                                td.innerHTML = ""
+                                                            }
+                                                            initpo()
+                                                            wynikdiv1.innerHTML = ilosc
+                                                            punkty += 1
+                                                            return 0
+                                                        }
+                                                    }
+                                                    else {
+                                                        ilosc += 7
+                                                        for (var z = 0; z < 7; z++) {
+                                                            tablicapoczatekB[q][p + z] = "0"
+                                                            q = Number(q)
+                                                            z = Number(z)
+                                                            var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                            doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                            punkty += 1
+                                                            await animationznikaj()
+                                                            going = 0
+                                                            td.innerHTML = ""
+                                                        }
+                                                        initpo()
+                                                        wynikdiv1.innerHTML = ilosc
+                                                        punkty += 1
+                                                        return 0
+                                                    }
+                                                } else {
+                                                    ilosc += 7
+                                                    for (var z = 0; z < 7; z++) {
+                                                        tablicapoczatekB[q][p + z] = "0"
+                                                        q = Number(q)
+                                                        z = Number(z)
+                                                        var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                        doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                        punkty += 1
+                                                        await animationznikaj()
+                                                        going = 0
+                                                        td.innerHTML = ""
+                                                    }
+                                                    initpo()
+                                                    wynikdiv1.innerHTML = ilosc
+                                                    punkty += 1
+                                                    return 0
+                                                }
+                                            }
+                                            else {
+                                                ilosc += 6
+                                                for (var z = 0; z < 6; z++) {
+                                                    tablicapoczatekB[q][p + z] = "0"
+                                                    q = Number(q)
+                                                    z = Number(z)
+                                                    var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                    doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                    punkty += 1
+                                                    await animationznikaj()
+                                                    going = 0
+                                                    td.innerHTML = ""
+                                                }
+                                                initpo()
+                                                wynikdiv1.innerHTML = ilosc
+                                                punkty += 1
+                                                return 0
+                                            }
+                                        }
+                                        else {
+                                            ilosc += 6
+                                            for (var z = 0; z < 6; z++) {
+                                                tablicapoczatekB[q][p + z] = "0"
+                                                q = Number(q)
+                                                z = Number(z)
+                                                var td = document.getElementById("id_" + q + "_" + (p + z))
+                                                doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                                punkty += 1
+                                                await animationznikaj()
+                                                going = 0
+                                                td.innerHTML = ""
+                                            }
+                                            initpo()
+                                            wynikdiv1.innerHTML = ilosc
+                                            punkty += 1
+                                            return 0
+                                        }
+                                    }
+                                    else {
+                                        ilosc += 5
+                                        for (var z = 0; z < 5; z++) {
+                                            tablicapoczatekB[q][p + z] = "0"
+                                            q = Number(q)
+                                            z = Number(z)
+                                            var td = document.getElementById("id_" + q + "_" + (p + z))
+                                            doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                            punkty += 1
+                                            await animationznikaj()
+                                            going = 0
+                                            td.innerHTML = ""
+                                        }
+                                        initpo()
+                                        wynikdiv1.innerHTML = ilosc
+                                        punkty += 1
+                                        return 0
+                                    }
+                                }
+                                else {
+                                    ilosc += 5
+                                    for (var z = 0; z < 5; z++) {
+                                        tablicapoczatekB[q][p + z] = "0"
+                                        q = Number(q)
+                                        z = Number(z)
+                                        var td = document.getElementById("id_" + q + "_" + (p + z))
+                                        doanimacji3 = document.getElementById("div_" + q + "_" + (p + z))
+                                        punkty += 1
+                                        await animationznikaj()
+                                        going = 0
+                                        td.innerHTML = ""
+                                    }
+                                    initpo()
+                                    wynikdiv1.innerHTML = ilosc
+                                    punkty += 1
+                                    return 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            async function skosplus() {
+                for (var q = 0; q < n; q++) {
+                    for (var p = 0; p < n; p++) {
+                        if (tablicakolory2[q + 1] && tablicakolory2[q + 2] && tablicakolory2[q + 3] && tablicakolory2[q + 4])
+                            if (tablicakolory2[q + 1][p + 1] && tablicakolory2[q + 2][p + 2] && tablicakolory2[q + 3][p + 3] && tablicakolory2[q + 4][p + 4]) {
+                                if (tablicakolory2[q][p] == tablicakolory2[q + 1][p + 1] &&
+                                    tablicakolory2[q][p] == tablicakolory2[q + 2][p + 2] &&
+                                    tablicakolory2[q][p] == tablicakolory2[q + 3][p + 3] &&
+                                    tablicakolory2[q][p] == tablicakolory2[q + 4][p + 4] &&
+                                    tablicakolory2[q][p] != "") {
+                                    if (tablicakolory2[q + 5]) {
+                                        if (tablicakolory2[q + 5][p + 5]) {
+                                            if (tablicakolory2[q][p] == tablicakolory2[q + 5][p + 5]) {
+                                                if (tablicakolory2[q + 6]) {
+                                                    if (tablicakolory2[q + 6][p + 6]) {
+                                                        if (tablicakolory2[q][p] == tablicakolory2[q + 6][p + 6]) {
+                                                            if (tablicakolory2[q + 7]) {
+                                                                if (tablicakolory2[q + 7][p + 7]) {
+                                                                    if (tablicakolory2[q][p] == tablicakolory2[q + 7][p + 7]) {
+                                                                        if (tablicakolory2[q + 8]) {
+                                                                            if (tablicakolory2[q + 8][p + 8]) {
+                                                                                if (tablicakolory2[q][p] == tablicakolory2[q + 8][p + 8]) {
+                                                                                    ilosc += 9
+                                                                                    for (var z = 0; z < 9; z++) {
+                                                                                        tablicapoczatekB[q + z][p + z] = "0"
+                                                                                        q = Number(q)
+                                                                                        z = Number(z)
+                                                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                                        punkty += 1
+                                                                                        await animationznikaj()
+                                                                                        going = 0
+                                                                                        td.innerHTML = ""
+                                                                                    }
+                                                                                    initpo()
+                                                                                    wynikdiv1.innerHTML = ilosc
+                                                                                    punkty += 1
+                                                                                    return 0
+                                                                                }
+                                                                                else {
+                                                                                    ilosc += 8
+                                                                                    for (var z = 0; z < 8; z++) {
+                                                                                        tablicapoczatekB[q + z][p + z] = "0"
+                                                                                        q = Number(q)
+                                                                                        z = Number(z)
+                                                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                                        punkty += 1
+                                                                                        await animationznikaj()
+                                                                                        going = 0
+                                                                                        td.innerHTML = ""
+                                                                                    }
+                                                                                    initpo()
+                                                                                    wynikdiv1.innerHTML = ilosc
+                                                                                    punkty += 1
+                                                                                    return 0
+                                                                                }
+                                                                            } else {
+                                                                                ilosc += 8
+                                                                                for (var z = 0; z < 8; z++) {
+                                                                                    tablicapoczatekB[q + z][p + z] = "0"
+                                                                                    q = Number(q)
+                                                                                    z = Number(z)
+                                                                                    var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                                    punkty += 1
+                                                                                    await animationznikaj()
+                                                                                    going = 0
+                                                                                    td.innerHTML = ""
+                                                                                }
+                                                                                initpo()
+                                                                                wynikdiv1.innerHTML = ilosc
+                                                                                punkty += 1
+                                                                                return 0
+                                                                            }
+                                                                        } else {
+                                                                            ilosc += 8
+                                                                            for (var z = 0; z < 8; z++) {
+                                                                                tablicapoczatekB[q + z][p + z] = "0"
+                                                                                q = Number(q)
+                                                                                z = Number(z)
+                                                                                var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                                punkty += 1
+                                                                                await animationznikaj()
+                                                                                going = 0
+                                                                                td.innerHTML = ""
+                                                                            }
+                                                                            initpo()
+                                                                            wynikdiv1.innerHTML = ilosc
+                                                                            punkty += 1
+                                                                            return 0
+                                                                        }
+                                                                    }
+                                                                    else {
+                                                                        ilosc += 7
+                                                                        for (var z = 0; z < 7; z++) {
+                                                                            tablicapoczatekB[q + z][p + z] = "0"
+                                                                            q = Number(q)
+                                                                            z = Number(z)
+                                                                            var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                            punkty += 1
+                                                                            await animationznikaj()
+                                                                            going = 0
+                                                                            td.innerHTML = ""
+                                                                        }
+                                                                        initpo()
+                                                                        wynikdiv1.innerHTML = ilosc
+                                                                        punkty += 1
+                                                                        return 0
+                                                                    }
+                                                                } else {
+                                                                    ilosc += 7
+                                                                    for (var z = 0; z < 7; z++) {
+                                                                        tablicapoczatekB[q + z][p + z] = "0"
+                                                                        q = Number(q)
+                                                                        z = Number(z)
+                                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                        punkty += 1
+                                                                        await animationznikaj()
+                                                                        going = 0
+                                                                        td.innerHTML = ""
+                                                                    }
+                                                                    initpo()
+                                                                    wynikdiv1.innerHTML = ilosc
+                                                                    punkty += 1
+                                                                    return 0
+                                                                }
+                                                            } else {
+                                                                ilosc += 7
+                                                                for (var z = 0; z < 7; z++) {
+                                                                    tablicapoczatekB[q + z][p + z] = "0"
+                                                                    q = Number(q)
+                                                                    z = Number(z)
+                                                                    var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                    punkty += 1
+                                                                    await animationznikaj()
+                                                                    going = 0
+                                                                    td.innerHTML = ""
+                                                                }
+                                                                initpo()
+                                                                wynikdiv1.innerHTML = ilosc
+                                                                punkty += 1
+                                                                return 0
+                                                            }
+                                                        } else {
+                                                            ilosc += 6
+                                                            for (var z = 0; z < 6; z++) {
+                                                                tablicapoczatekB[q + z][p + z] = "0"
+                                                                q = Number(q)
+                                                                z = Number(z)
+                                                                var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                                punkty += 1
+                                                                await animationznikaj()
+                                                                going = 0
+                                                                td.innerHTML = ""
+                                                            }
+                                                            initpo()
+                                                            wynikdiv1.innerHTML = ilosc
+                                                            punkty += 1
+                                                            return 0
+                                                        }
+                                                    }
+                                                    else {
+                                                        ilosc += 6
+                                                        for (var z = 0; z < 6; z++) {
+                                                            tablicapoczatekB[q + z][p + z] = "0"
+                                                            q = Number(q)
+                                                            z = Number(z)
+                                                            var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                            punkty += 1
+                                                            await animationznikaj()
+                                                            going = 0
+                                                            td.innerHTML = ""
+                                                        }
+                                                        initpo()
+                                                        wynikdiv1.innerHTML = ilosc
+                                                        punkty += 1
+                                                        return 0
+                                                    }
+                                                } else {
+                                                    ilosc += 6
+                                                    for (var z = 0; z < 6; z++) {
+                                                        tablicapoczatekB[q + z][p + z] = "0"
+                                                        q = Number(q)
+                                                        z = Number(z)
+                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                        punkty += 1
+                                                        await animationznikaj()
+                                                        going = 0
+                                                        td.innerHTML = ""
+                                                    }
+                                                    initpo()
+                                                    wynikdiv1.innerHTML = ilosc
+                                                    punkty += 1
+                                                    return 0
+                                                }
+                                            }
+                                            else {
+                                                ilosc += 5
+                                                for (var z = 0; z < 5; z++) {
+                                                    tablicapoczatekB[q + z][p + z] = "0"
+                                                    q = Number(q)
+                                                    z = Number(z)
+                                                    var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                    punkty += 1
+                                                    await animationznikaj()
+                                                    going = 0
+                                                    td.innerHTML = ""
+                                                }
+                                                initpo()
+                                                wynikdiv1.innerHTML = ilosc
+                                                punkty += 1
+                                                return 0
+                                            }
+                                        }
+                                        else {
+                                            ilosc += 5
+                                            for (var z = 0; z < 5; z++) {
+                                                tablicapoczatekB[q + z][p + z] = "0"
+                                                q = Number(q)
+                                                z = Number(z)
+                                                var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                                punkty += 1
+                                                await animationznikaj()
+                                                going = 0
+                                                td.innerHTML = ""
+                                            }
+                                            initpo()
+                                            wynikdiv1.innerHTML = ilosc
+                                            punkty += 1
+                                            return 0
+
+
+                                        }
+                                    } else {
+                                        ilosc += 5
+                                        for (var z = 0; z < 5; z++) {
+                                            tablicapoczatekB[q + z][p + z] = "0"
+                                            q = Number(q)
+                                            z = Number(z)
+                                            var td = document.getElementById("id_" + (q + z) + "_" + (p + z))
+                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p + z))
+                                            punkty += 1
+                                            await animationznikaj()
+                                            going = 0
+                                            td.innerHTML = ""
+                                        }
+                                        initpo()
+                                        wynikdiv1.innerHTML = ilosc
+                                        punkty += 1
+                                        return 0
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+
+            async function skosminus() {
+                for (var q = 0; q < n; q++) {
+                    for (var p = 0; p < n; p++) {
+                        if (tablicakolory2[q + 1] && tablicakolory2[q + 2] && tablicakolory2[q + 3] && tablicakolory2[q + 4])
+                            if (tablicakolory2[q + 1][p - 1] && tablicakolory2[q + 2][p - 2] && tablicakolory2[q + 3][p - 3] && tablicakolory2[q + 4][p - 4]) {
+                                if (tablicakolory2[q][p] == tablicakolory2[q + 1][p - 1] &&
+                                    tablicakolory2[q][p] == tablicakolory2[q + 2][p - 2] &&
+                                    tablicakolory2[q][p] == tablicakolory2[q + 3][p - 3] &&
+                                    tablicakolory2[q][p] == tablicakolory2[q + 4][p - 4] &&
+                                    tablicakolory2[q][p] != "") {
+                                    if (tablicakolory2[q + 5]) {
+                                        if (tablicakolory2[q + 5][p - 5]) {
+                                            if (tablicakolory2[q][p] == tablicakolory2[q + 5][p - 5]) {
+                                                if (tablicakolory2[q + 6]) {
+                                                    if (tablicakolory2[q + 6][p - 6]) {
+                                                        if (tablicakolory2[q][p] == tablicakolory2[q + 6][p - 6]) {
+                                                            if (tablicakolory2[q + 7]) {
+                                                                if (tablicakolory2[q + 7][p - 7]) {
+                                                                    if (tablicakolory2[q][p] == tablicakolory2[q + 7][p - 7]) {
+                                                                        if (tablicakolory2[q + 8]) {
+                                                                            if (tablicakolory2[q + 8][p - 8]) {
+                                                                                if (tablicakolory2[q][p] == tablicakolory2[q + 8][p - 8]) {
+                                                                                    ilosc += 9
+                                                                                    for (var z = 0; z < 9; z++) {
+                                                                                        tablicapoczatekB[q + z][p - z] = "0"
+                                                                                        q = Number(q)
+                                                                                        z = Number(z)
+                                                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                                        punkty += 1
+                                                                                        await animationznikaj()
+                                                                                        going = 0
+                                                                                        td.innerHTML = ""
+                                                                                    }
+                                                                                    initpo()
+                                                                                    wynikdiv1.innerHTML = ilosc
+                                                                                    punkty += 1
+                                                                                    return 0
+
+                                                                                }
+                                                                                else {
+                                                                                    ilosc += 8
+                                                                                    for (var z = 0; z < 8; z++) {
+                                                                                        tablicapoczatekB[q + z][p - z] = "0"
+                                                                                        q = Number(q)
+                                                                                        z = Number(z)
+                                                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                                        punkty += 1
+                                                                                        await animationznikaj()
+                                                                                        going = 0
+                                                                                        td.innerHTML = ""
+                                                                                    }
+                                                                                    initpo()
+                                                                                    wynikdiv1.innerHTML = ilosc
+                                                                                    punkty += 1
+                                                                                    return 0
+                                                                                }
+                                                                            } else {
+                                                                                ilosc += 8
+                                                                                for (var z = 0; z < 8; z++) {
+                                                                                    tablicapoczatekB[q + z][p - z] = "0"
+                                                                                    q = Number(q)
+                                                                                    z = Number(z)
+                                                                                    var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                                    punkty += 1
+                                                                                    await animationznikaj()
+                                                                                    going = 0
+                                                                                    td.innerHTML = ""
+                                                                                }
+                                                                                initpo()
+                                                                                wynikdiv1.innerHTML = ilosc
+                                                                                punkty += 1
+                                                                                return 0
+                                                                            }
+                                                                        } else {
+                                                                            ilosc += 8
+                                                                            for (var z = 0; z < 8; z++) {
+                                                                                tablicapoczatekB[q + z][p - z] = "0"
+                                                                                q = Number(q)
+                                                                                z = Number(z)
+                                                                                var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                                punkty += 1
+                                                                                await animationznikaj()
+                                                                                going = 0
+                                                                                td.innerHTML = ""
+                                                                            }
+                                                                            initpo()
+                                                                            wynikdiv1.innerHTML = ilosc
+                                                                            punkty += 1
+                                                                            return 0
+                                                                        }
+                                                                    } else {
+                                                                        ilosc += 7
+                                                                        for (var z = 0; z < 7; z++) {
+                                                                            tablicapoczatekB[q + z][p - z] = "0"
+                                                                            q = Number(q)
+                                                                            z = Number(z)
+                                                                            var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                            punkty += 1
+                                                                            await animationznikaj()
+                                                                            going = 0
+                                                                            td.innerHTML = ""
+                                                                        }
+                                                                        initpo()
+                                                                        wynikdiv1.innerHTML = ilosc
+                                                                        punkty += 1
+                                                                        return 0
+                                                                    }
+                                                                } else {
+                                                                    ilosc += 7
+                                                                    for (var z = 0; z < 7; z++) {
+                                                                        tablicapoczatekB[q + z][p - z] = "0"
+                                                                        q = Number(q)
+                                                                        z = Number(z)
+                                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                        punkty += 1
+                                                                        await animationznikaj()
+                                                                        going = 0
+                                                                        td.innerHTML = ""
+                                                                    }
+                                                                    initpo()
+                                                                    wynikdiv1.innerHTML = ilosc
+                                                                    punkty += 1
+                                                                    return 0
+                                                                }
+                                                            } else {
+                                                                ilosc += 7
+                                                                for (var z = 0; z < 7; z++) {
+                                                                    tablicapoczatekB[q + z][p - z] = "0"
+                                                                    q = Number(q)
+                                                                    z = Number(z)
+                                                                    var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                    punkty += 1
+                                                                    await animationznikaj()
+                                                                    going = 0
+                                                                    td.innerHTML = ""
+                                                                }
+                                                                initpo()
+                                                                wynikdiv1.innerHTML = ilosc
+                                                                punkty += 1
+                                                                return 0
+                                                            }
+                                                        }
+                                                        else {
+                                                            ilosc += 6
+                                                            for (var z = 0; z < 6; z++) {
+                                                                tablicapoczatekB[q + z][p - z] = "0"
+                                                                q = Number(q)
+                                                                z = Number(z)
+                                                                var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                                punkty += 1
+                                                                await animationznikaj()
+                                                                going = 0
+                                                                td.innerHTML = ""
+                                                            }
+                                                            initpo()
+                                                            wynikdiv1.innerHTML = ilosc
+                                                            punkty += 1
+                                                            return 0
+                                                        }
+                                                    }
+                                                    else {
+                                                        ilosc += 6
+                                                        for (var z = 0; z < 6; z++) {
+                                                            tablicapoczatekB[q + z][p - z] = "0"
+                                                            q = Number(q)
+                                                            z = Number(z)
+                                                            var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                            punkty += 1
+                                                            await animationznikaj()
+                                                            going = 0
+                                                            td.innerHTML = ""
+                                                        }
+                                                        initpo()
+                                                        wynikdiv1.innerHTML = ilosc
+                                                        punkty += 1
+                                                        return 0
+                                                    }
+                                                } else {
+                                                    ilosc += 6
+                                                    for (var z = 0; z < 6; z++) {
+                                                        tablicapoczatekB[q + z][p - z] = "0"
+                                                        q = Number(q)
+                                                        z = Number(z)
+                                                        var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                        doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                        punkty += 1
+                                                        await animationznikaj()
+                                                        going = 0
+                                                        td.innerHTML = ""
+                                                    }
+                                                    initpo()
+                                                    wynikdiv1.innerHTML = ilosc
+                                                    punkty += 1
+                                                    return 0
+                                                }
+                                            }
+                                            else {
+                                                ilosc += 5
+                                                for (var z = 0; z < 5; z++) {
+                                                    tablicapoczatekB[q + z][p - z] = "0"
+                                                    q = Number(q)
+                                                    z = Number(z)
+                                                    var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                    doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                    punkty += 1
+                                                    await animationznikaj()
+                                                    going = 0
+                                                    td.innerHTML = ""
+                                                }
+                                                initpo()
+                                                wynikdiv1.innerHTML = ilosc
+                                                punkty += 1
+                                                return 0
+                                            }
+                                        }
+                                        else {
+                                            ilosc += 5
+                                            for (var z = 0; z < 5; z++) {
+                                                tablicapoczatekB[q + z][p - z] = "0"
+                                                q = Number(q)
+                                                z = Number(z)
+                                                var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                                doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                                punkty += 1
+                                                await animationznikaj()
+                                                going = 0
+                                                td.innerHTML = ""
+                                            }
+                                            initpo()
+                                            wynikdiv1.innerHTML = ilosc
+                                            punkty += 1
+                                            return 0
+
+
+                                        }
+                                    } else {
+                                        ilosc += 5
+                                        for (var z = 0; z < 5; z++) {
+                                            tablicapoczatekB[q + z][p - z] = "0"
+                                            q = Number(q)
+                                            z = Number(z)
+                                            var td = document.getElementById("id_" + (q + z) + "_" + (p - z))
+                                            doanimacji3 = document.getElementById("div_" + (q + z) + "_" + (p - z))
+                                            punkty += 1
+                                            await animationznikaj()
+                                            going = 0
+                                            td.innerHTML = ""
+                                        }
+                                        initpo()
+                                        wynikdiv1.innerHTML = ilosc
+                                        punkty += 1
+                                        return 0
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+            wynikdiv1.innerHTML = ilosc
+            initpo()
+        }
+
+        function animationKlik() {
+            if (poz < 10 && pozcheck == 0) {
+                doanimacji.style.transform = "translate(0px,-" + poz + "px)"
+                poz++
+            }
+            else if (poz >= 10 && pozcheck == 0) {
+                pozcheck = 1
+            }
+
+            if (poz > -5 && pozcheck == 1) {
+                if (poz >= 0) {
+                    doanimacji.style.transform = "translate(0px,-" + poz + "px)"
+                }
+                else if (poz < 0) {
+                    poz = -poz
+                    doanimacji.style.transform = "translate(0px," + poz + "px)"
+                    poz = -poz
+                }
+                poz--
+            }
+            else if (poz <= -5 && pozcheck == 1) {
+                pozcheck = 2
+
+            }
+
+            if (poz <= 0 && pozcheck == 2) {
+                poz = -poz
+                doanimacji.style.transform = "translate(0px," + poz + "px)"
+                poz = -poz
+                poz++
+            }
+
+            if (poz == 0 && pozcheck == 2) {
+                poz = 0
+                pozcheck = 0
+            }
+
+            animationKlikEvent = requestAnimationFrame(animationKlik)
+        }
+
+        async function animationMove() {
+            going = 1
+            var coords = []
+            var vects = []
+            var ball = document.getElementById("div_" + najkrotszadroga[0])
+            for (var i = 0; i < najkrotszadroga.length; i++) {
+                var cyc = document.getElementById("id_" + najkrotszadroga[i])
+                coords.push({ top: Math.floor(cyc.getBoundingClientRect().top), left: Math.floor(cyc.getBoundingClientRect().left) })
+            }
+
+            var zd = 0
+            var a = 0
+            var b = 0
+            do {
+                if (coords[zd + 1].top - coords[zd].top > 0) {
+                    vects.push('d')
+                }
+                else if (coords[zd + 1].top - coords[zd].top < 0) {
+                    vects.push('u')
+                }
+                else if (coords[zd + 1].left - coords[zd].left > 0) {
+                    vects.push('r')
+                }
+                else if (coords[zd + 1].left - coords[zd].left < 0) {
+                    vects.push('l')
+                }
+                zd++
+            } while (zd <= coords.length - 2)
+
+            for (var i = 0; i < vects.length; i++) {
+                if (vects[i] == "u") {
+                    gora = 1
+                }
+            }
+            zd = 0
+            animation()
+            async function animation() {
+                switch (vects[zd]) {
+                    case 'u':
+                        for (let i = 0; i < 32; i++) {
+                            await sleep(10)
+                            if (i < 26)
+                                b -= 2.5
+                            if (i >= 26)
+                                b += 2.5
+                            ball.style.transform = "translate(" + a + "px, " + b + "px)"
+                        }
+                        break;
+                    case 'd':
+                        for (let i = 0; i < 20; i++) {
+                            await sleep(10)
+                            b += 2.5
+                            ball.style.transform = "translate(" + a + "px, " + b + "px)"
+                        }
+                        break;
+                    case 'l':
+                        for (let i = 0; i < 20; i++) {
+                            await sleep(10)
+                            if (i < 10)
+                                b -= 2.5
+                            if (i >= 10)
+                                b += 2.5
+                            a -= 2.5
+                            ball.style.transform = "translate(" + a + "px, " + b + "px)"
+                        }
+                        break;
+                    case 'r':
+                        for (let i = 0; i < 20; i++) {
+                            await sleep(10)
+                            if (i < 10)
+                                b -= 2.5
+                            if (i >= 10)
+                                b += 2.5
+                            a += 2.5
+                            ball.style.transform = "translate(" + a + "px, " + b + "px)"
+                        }
+                        break;
+                }
+                zd++
+                if (zd <= vects.length - 1) requestAnimationFrame(animation)
+            }
+        }
+
+        function koniec() {
+            var table = document.getElementById("tabela")
+            var szer = window.innerWidth
+            var szer2 = getComputedStyle(table).height
+            szer2 = szer2.replace('px', '');
+            szer2 = Number(szer2)
+            szer2 += 30
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    td = document.getElementById("id_" + i + "_" + j)
+                    div = document.getElementById("div_" + i + "_" + j)
+                    div.removeEventListener("click", zmien)
+                    div.removeEventListener("click", startmeta)
+                    td.removeEventListener("mouseenter", podazaj)
+                    td.removeEventListener("click", startmeta)
+                }
+            }
+            var koncuwa = document.createElement("div")
+            var koniec = document.createElement("img")
+            koniec.style.position = "absolute"
+            koniec.src = "img/koniec.png"
+            koniec.style.zIndex = 0
+            var koniecbt = document.createElement("button")
+            koniecbt.onclick = restart
+            koniecbt.style.backgroundImage = "url('img/ok.png')"
+            koniecbt.style.width = "65px"
+            koniecbt.style.height = "41px"
+            koniecbt.style.zIndex = 2
+            koniecbt.style.border = "none"
+            koniecbt.style.position = "absolute"
+            koniecbt.style.top = "165px"
+            koniecbt.style.left = "115px"
+            koncuwa.style.position = "absolute"
+            koncuwa.style.top = szer2 / 4 + "px"
+            koncuwa.style.left = szer / 2 - 100 + "px"
+            koncuwa.appendChild(koniecbt)
+            koncuwa.appendChild(koniec)
+            document.body.appendChild(koncuwa)
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'digital';
+            src: url('data/digital-7.ttf');
+        }
+    </style>
+</head>
+
+<body onload="init()">
+</body>
+
+</html>
